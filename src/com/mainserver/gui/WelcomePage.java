@@ -16,11 +16,7 @@ public class WelcomePage extends MyComposite{
 	@Override
 	public void createContent() {
 		setLayout(new FormLayout());
-		setBounds(0, 0, 300, 300);
-		//Label l=new Label(this, SWT.NONE);
 		guiHandler.getBackgroundLoader().setBackgroundImage(this);
-		Button button=new Button(this, SWT.None/*getBackgroundMode()*/);
-		button.setBounds(0, 0, 10, 10);
 	}
 
 }

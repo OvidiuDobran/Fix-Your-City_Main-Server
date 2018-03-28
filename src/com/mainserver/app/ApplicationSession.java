@@ -6,9 +6,11 @@ public class ApplicationSession {
 
 	private static ApplicationSession instance;
 	private GUIHandler guiHandler;
+	private MainServerApp app;
 
 	private ApplicationSession() {
 		setGuiHandler(new GUIHandler());
+		setApp(new MainServerApp());
 	}
 
 	public GUIHandler getGuiHandler() {
@@ -28,5 +30,13 @@ public class ApplicationSession {
 			}
 		}
 		return instance;
+	}
+
+	public MainServerApp getApp() {
+		return app;
+	}
+
+	public void setApp(MainServerApp app) {
+		this.app = app;
 	}
 }
