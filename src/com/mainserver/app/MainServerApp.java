@@ -1,13 +1,8 @@
 package com.mainserver.app;
 
-import com.mainserver.gui.GUIHandler;
-
 public class MainServerApp {
 
-	private GUIHandler guiHandler;
-
 	public MainServerApp() {
-		guiHandler=new GUIHandler();
 	}
 
 	public static void main(String[] args) {
@@ -16,7 +11,7 @@ public class MainServerApp {
 	}
 
 	private void run() {
-		guiHandler.run();
+		ApplicationSession.getInstance().getGuiHandler().run();
 	}
 
 }

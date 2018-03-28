@@ -1,5 +1,13 @@
 package com.mainserver.gui;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -7,17 +15,53 @@ public class GUIHandler {
 	private Display display;
 	private Shell shell;
 	private BackgroundLoader backgroundLoader;
+	private int buttonWidth=70;
+	private int buttonHeight=30;
 
 	public GUIHandler() {
 		setDisplay(new Display());
-		setShell(new Shell(getDisplay()));
-		setBackgroundLoader(new BackgroundLoader(shell));
+		setShell(new Shell(getDisplay(), SWT.ALT | SWT.MIN | SWT.CLOSE));
+		setBackgroundLoader(new BackgroundLoader());
 	}
 
 	public void run() {
-		shell.setLayout(new FillLayout());
-		shell.setSize(backgroundLoader.getBackgroundWidth(), backgroundLoader.getBackgroundHeght());
-		backgroundLoader.setBackgroundImage();
+		shell.setLayout(new FormLayout());
+		shell.setSize(backgroundLoader.getBackgroundWidth(), backgroundLoader.getBackgroundHeight() + 100);
+
+		Composite contentPanel = new Composite(shell, SWT.BORDER);
+		//contentPanel.setBounds(10, 10, 300, 300);
+		StackLayout layout = new StackLayout();
+		contentPanel.setLayout(layout);
+
+		// create the first page's content
+		WelcomePage welcomePage = new WelcomePage(contentPanel, SWT.NONE);
+		layout.topControl = welcomePage;
+		contentPanel.layout();
+
+		FormData dataContentPanel = new FormData();
+		dataContentPanel.top = new FormAttachment(0, 0);
+		dataContentPanel.right = new FormAttachment(100, 0);
+		dataContentPanel.left = new FormAttachment(0, 0);
+		contentPanel.setLayoutData(dataContentPanel);
+
+		Button exit = new Button(shell, SWT.NONE);
+		exit.setText("Exit");
+		FormData exitData = new FormData();
+		exitData.bottom = new FormAttachment(100, -10);
+		exitData.right=new FormAttachment(100,-10);
+		exitData.width=buttonWidth;
+		exitData.height=buttonHeight;
+		exit.setLayoutData(exitData);
+		
+		Button next = new Button(shell, SWT.NONE);
+		next.setText("Next");
+		FormData nextData = new FormData();
+		nextData.bottom = new FormAttachment(100, -10);
+		nextData.right=new FormAttachment(exit,-20);
+		nextData.width=buttonWidth;
+		nextData.height=buttonHeight;
+		next.setLayoutData(nextData);
+		
 		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {

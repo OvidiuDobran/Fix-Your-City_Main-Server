@@ -3,42 +3,43 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Label;
 
 public class BackgroundLoader {
 	
 	private Display display;
-	private Shell shell;
 	private Image image;
 	private String imagePath;
 
-	public BackgroundLoader(Shell shell) {
-		this.imagePath = "background.jpg";
-		image = new Image(display, imagePath);
+	public BackgroundLoader() {
+		this.setImagePath("background.jpg");
 		display=Display.getCurrent();
-		this.shell=shell;
+		image = new Image(display, getImagePath());
 	}
 	
-	public void setBackgroundImage() {
-		Canvas canvas = new Canvas(shell, SWT.NONE);
-
-	    canvas.addPaintListener(new PaintListener() {
-	      public void paintControl(PaintEvent e) {
-	        e.gc.drawImage(image, 0, 0);
-	        image.dispose();
-	      }
-	    });
+	public void setBackgroundImage(Composite composite) {
+	    Label label = new Label(composite, SWT.BORDER );
+	    label.setImage(new Image(display,"background.jpg"));
 	}
 
 	public int getBackgroundWidth() {
 		return image.getBounds().width;
 	}
 
-	public int getBackgroundHeght() {
+	public int getBackgroundHeight() {
 		return image.getBounds().height;
 	}
-	
 
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+	
 }
