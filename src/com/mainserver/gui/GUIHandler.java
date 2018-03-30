@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import com.mainserver.app.ApplicationSession;
@@ -94,7 +95,10 @@ public class GUIHandler {
 						changeToPage(detailsPage);
 						detailsPage.receiveDataToDisplay(inboxPage.getDataToSend());
 					}else {
-						//TODO add message box to tell the user to select an item
+						MessageBox messageBox = new MessageBox(shell, SWT.ICON_WARNING );
+				        messageBox.setText("Select a record");
+				        messageBox.setMessage("You need to select a record to continue");
+				        messageBox.open();
 					}
 				}
 			}
