@@ -7,13 +7,26 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.Message.RecipientType;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 public class MainServerApp {
 
 	public List<Problem> problems;
+	public List<Receiver> receivers;
 
 	public MainServerApp() {
 		problems = new ArrayList<Problem>();
+		receivers = new ArrayList<Receiver>();
 	}
 
 	public static void main(String[] args) {
@@ -27,8 +40,8 @@ public class MainServerApp {
 
 	public void openInBrowser(String longitude, String latitude) {
 		if (Desktop.isDesktopSupported()) {
-		    try {
-				Desktop.getDesktop().browse(new URI("https://www.google.com/maps/?q="+longitude+","+latitude));
+			try {
+				Desktop.getDesktop().browse(new URI("https://www.google.com/maps/?q=" + longitude + "," + latitude));
 			} catch (IOException | URISyntaxException e) {
 				e.printStackTrace();
 			}
@@ -41,14 +54,14 @@ public class MainServerApp {
 	}
 
 	public void getProblemsFromDB() {
-		Problem problem1 = new Problem((new Date()).toString(), new User("ion", "ion"), "pisica in copac", "45.749455",
-				"21.231243",Status.NEW);
-		Problem problem2 = new Problem((new Date()).toString(), new User("ion", "ion"), "pisica in copac", "45.749455",
-				"21.231243",Status.NEW);
-		Problem problem3 = new Problem((new Date()).toString(), new User("ion", "ion"), "pisica in copac", "45.749455",
-				"21.231243",Status.NEW);
-		Problem problem4 = new Problem((new Date()).toString(), new User("ion", "ion"), "pisica in copac", "45.749455",
-				"21.231243",Status.NEW);
+		Problem problem1 = new Problem((new Date()).toString(), new User("app_client_user@yahoo.com", "a_password_123"),
+				"pisica in copac", "45.749455", "21.231243", Status.NEW);
+		Problem problem2 = new Problem((new Date()).toString(), new User("app_client_user@yahoo.com", "a_password_123"),
+				"pisica in copac", "45.749455", "21.231243", Status.NEW);
+		Problem problem3 = new Problem((new Date()).toString(), new User("app_client_user@yahoo.com", "a_password_123"),
+				"pisica in copac", "45.749455", "21.231243", Status.NEW);
+		Problem problem4 = new Problem((new Date()).toString(), new User("app_client_user@yahoo.com", "a_password_123"),
+				"pisica in copac", "45.749455", "21.231243", Status.NEW);
 
 		problems = new ArrayList<Problem>();
 		problems.add(problem1);
@@ -56,14 +69,29 @@ public class MainServerApp {
 		problems.add(problem3);
 		problems.add(problem4);
 	}
-	
-	public Problem getProblemById(int id){
-		for(Problem problem:problems) {
-			if (problem.getId()==id) {
+
+	public void getReceiversFromDB() {
+		receivers = new ArrayList<Receiver>();
+		receivers.add(new Receiver("Politie"));
+		receivers.add(new Receiver("Primarie"));
+		receivers.add(new Receiver("Pompieri"));
+	}
+
+	public void sentProblemToReceiver(Problem problem, Receiver receiver) {
+		// TODO some interactions with the DB
+	}
+
+	public Problem getProblemById(int id) {
+		for (Problem problem : problems) {
+			if (problem.getId() == id) {
 				return problem;
 			}
 		}
 		return null;
+	}
+
+	public void sendConfirmationEmail(Problem problem) {
+		 //TODO sending email
 	}
 
 }

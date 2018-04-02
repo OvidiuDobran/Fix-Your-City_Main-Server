@@ -4,10 +4,12 @@ import java.lang.reflect.MalformedParametersException;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.internal.win32.GESTURECONFIG;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
@@ -16,6 +18,7 @@ import org.eclipse.swt.widgets.Text;
 
 import com.mainserver.app.ApplicationSession;
 import com.mainserver.app.Problem;
+import com.mainserver.app.Receiver;
 
 public class DetailsPage extends MyComposite implements Behaviourable, Refreshable {
 
@@ -28,6 +31,7 @@ public class DetailsPage extends MyComposite implements Behaviourable, Refreshab
 	private Problem problem;
 	private Text textId;
 	private Button mapsButton;
+	private Combo comboReceiver;
 
 	public DetailsPage(Composite parent, int style) {
 		super(parent, style);
@@ -147,23 +151,45 @@ public class DetailsPage extends MyComposite implements Behaviourable, Refreshab
 		textStatusData.left = new FormAttachment(labelId, 80);
 		textStatusData.width = textWidth;
 		textStatus.setLayoutData(textStatusData);
+		
+		Label labelReceiver = new Label(this, SWT.NONE);
+		labelReceiver.setText("Receiver:");
+		FormData labelRecData = new FormData();
+		labelRecData.top = new FormAttachment(labelStatus, 20);
+		labelRecData.left = new FormAttachment(0, 20);
+		labelReceiver.setLayoutData(labelRecData);
+
+		
+		comboReceiver = new Combo(this, SWT.DROP_DOWN | SWT.BORDER);
+		FormData comboRecData = new FormData();
+		comboRecData.top = new FormAttachment(labelStatus, 20);
+		comboRecData.left = new FormAttachment(labelId, 80);
+		comboRecData.width = textWidth;
+		comboReceiver.setLayoutData(comboRecData);
 
 	}
 
-	public void receiveDataToDisplay(Problem problem) {
-		this.problem=problem;
+	public void updateProblemToDisplay(Problem problem) {
+		this.setProblem(problem);
 	}
 
 	@Override
 	public void refresh() {
-		if(problem!=null) {
-			textId.setText("ID:"+problem.getId()+"");
-			textTime.setText(problem.getDate());
-			textUser.setText(problem.getUser().getEmail());
-			textDescription.setText(problem.getDescription());
-			textLong.setText(problem.getLongitude());
-			textLat.setText(problem.getLatitude());
-			textStatus.setText(problem.getStatus()+"");
+		if(getProblem()!=null) {
+			textId.setText("ID:"+getProblem().getId()+"");
+			textTime.setText(getProblem().getDate());
+			textUser.setText(getProblem().getUser().getEmail());
+			textDescription.setText(getProblem().getDescription());
+			textLong.setText(getProblem().getLongitude());
+			textLat.setText(getProblem().getLatitude());
+			textStatus.setText(getProblem().getStatus()+"");
+			
+			comboReceiver.removeAll();
+			ApplicationSession.getInstance().getApp().getReceiversFromDB();
+			List<Receiver> receivers=ApplicationSession.getInstance().getApp().receivers;
+			for(Receiver rec:receivers) {
+				comboReceiver.add(rec.getName());
+			}
 		}
 	}
 
@@ -176,6 +202,27 @@ public class DetailsPage extends MyComposite implements Behaviourable, Refreshab
 				ApplicationSession.getInstance().getApp().openInBrowser(textLong.getText(), textLat.getText());
 			}
 		});
+	}
+	
+	public boolean isItemSelected() {
+		return comboReceiver.getSelectionIndex() != -1;
+	}
+	
+	public Receiver getSelectedReceiver() {
+		for(Receiver receiver:ApplicationSession.getInstance().getApp().receivers) {
+			if(receiver.getName().equals(comboReceiver.getItem(comboReceiver.getSelectionIndex()))) {
+				return receiver;
+			}
+		}
+		return null;
+	}
+
+	public Problem getProblem() {
+		return problem;
+	}
+
+	public void setProblem(Problem problem) {
+		this.problem = problem;
 	}
 
 }
