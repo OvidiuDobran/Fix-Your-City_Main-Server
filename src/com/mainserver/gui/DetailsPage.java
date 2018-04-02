@@ -176,7 +176,7 @@ public class DetailsPage extends MyComposite implements Behaviourable, Refreshab
 	@Override
 	public void refresh() {
 		if(getProblem()!=null) {
-			textId.setText("ID:"+getProblem().getId()+"");
+			textId.setText(getProblem().getId()+"");
 			textTime.setText(getProblem().getDate());
 			textUser.setText(getProblem().getUser().getEmail());
 			textDescription.setText(getProblem().getDescription());
