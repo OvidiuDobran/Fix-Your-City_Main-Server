@@ -14,5 +14,6 @@ public abstract class MyComposite extends Composite{
 	}
 	
 	public abstract void createContent();
+	
 
 }

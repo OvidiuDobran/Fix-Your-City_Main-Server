@@ -9,20 +9,22 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-public class InboxPage extends MyComposite {
+import com.mainserver.app.ApplicationSession;
+import com.mainserver.app.Problem;
 
-	
+public class InboxPage extends MyComposite implements Behaviourable, Refreshable {
+
 	protected Table table;
-	private List<String>dataToSend;
-	
+	private Problem selectedProblem;
+
 	public InboxPage(Composite parent, int style) {
 		super(parent, style);
+		addBehaviours();
 	}
 
 	@Override
@@ -33,7 +35,7 @@ public class InboxPage extends MyComposite {
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 
-		String[] titles = { "Time", "User", "Problem","Status" };
+		String[] titles = { "ID", "Time", "User", "Problem", "Status" };
 		for (int i = 0; i < titles.length; i++) {
 			TableColumn column = new TableColumn(table, SWT.CENTER);
 			column.setText(titles[i]);
@@ -49,50 +51,51 @@ public class InboxPage extends MyComposite {
 		tableFormData.right = new FormAttachment(100, -30);
 		table.setLayoutData(tableFormData);
 
+	}
+
+	@Override
+	public void refresh() {
+		//selectedProblem = null;
+		populateTable();
+	}
+
+	private void populateTable() {
+		table.removeAll();
+		ApplicationSession.getInstance().getApp().getProblemsFromDB();
+		List<Problem> problems = ApplicationSession.getInstance().getApp().problems;
+		for (int i = 0; i < problems.size(); i++) {
+			TableItem item = new TableItem(table, SWT.NONE);
+			item.setText(0, problems.get(i).getId() + "");
+			item.setText(1, problems.get(i).getDate());
+			item.setText(2, problems.get(i).getUser().getEmail());
+			item.setText(3, problems.get(i).getDescription());
+			item.setText(4, problems.get(i).getStatus().toString());
+		}
+	}
+
+	public boolean isItemSelected() {
+		return table.getSelectionIndex() != -1;
+	}
+
+	@Override
+	public void addBehaviours() {
 		table.addListener(SWT.Selection, new Listener() {
 
 			@Override
 			public void handleEvent(Event arg0) {
 				int index = table.getSelectionIndex();
 				TableItem item = table.getItem(index);
-				/*System.out.print(item.getText(0));
-				System.out.print(item.getText(1));
-				System.out.println(item.getText(2));*/
-				for (int i=0;i<table.getColumnCount();i++) {
-					getDataToSend().add(item.getText(i));
-				}
+				selectedProblem = ApplicationSession.getInstance().getApp().getProblemById((Integer.parseInt(item.getText(0))));
 			}
 		});
-
 	}
 
-	public void refresh() {
-		setDataToSend(new ArrayList<String>());
-		populateTable();
+	public Problem getSelectedProblem() {
+		return selectedProblem;
 	}
 
-	private void populateTable() {
-		table.removeAll();
-		//TODO here will be a call to a method that will get the records from the DB
-		for (int i = 0; i < 20; i++) {
-			TableItem item = new TableItem(table, SWT.NONE);
-			item.setText(0, "x");
-			item.setText(1, "y");
-			item.setText(2, "!");
-			item.setText(3,"NEW");
-		}
+	public void setProblem(Problem problem) {
+		this.selectedProblem = problem;
 	}
 
-	public List<String> getDataToSend() {
-		return dataToSend;
-	}
-
-	public void setDataToSend(List<String> dataToSend) {
-		this.dataToSend = dataToSend;
-	}
-	
-	public boolean isItemSelected() {
-		return table.getSelectionIndex()!=-1;
-	}
-	
 }

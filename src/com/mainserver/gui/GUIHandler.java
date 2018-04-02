@@ -74,6 +74,17 @@ public class GUIHandler {
 		nextData.height = buttonHeight;
 		next.setLayoutData(nextData);
 
+		Button refresh = new Button(shell, SWT.NONE);
+		refresh.setText("Refresh");
+		FormData refereshData = new FormData();
+		refereshData.bottom = new FormAttachment(100, -10);
+		refereshData.right = new FormAttachment(next, -20);
+		refereshData.width = buttonWidth;
+		refereshData.height = buttonHeight;
+		refresh.setLayoutData(refereshData);
+		refresh.setEnabled(false);
+		refresh.setVisible(false);
+
 		exit.addListener(SWT.Selection, new Listener() {
 
 			@Override
@@ -87,20 +98,33 @@ public class GUIHandler {
 
 			@Override
 			public void handleEvent(Event arg0) {
+				refresh.setEnabled(false);
+				refresh.setVisible(false);
 				if (layout.topControl == welcomePage) {
 					changeToPage(inboxPage);
 					inboxPage.refresh();
+					refresh.setEnabled(true);
+					refresh.setVisible(true);
 				} else if (layout.topControl == inboxPage) {
 					if (inboxPage.isItemSelected()) {
 						changeToPage(detailsPage);
-						detailsPage.receiveDataToDisplay(inboxPage.getDataToSend());
-					}else {
-						MessageBox messageBox = new MessageBox(shell, SWT.ICON_WARNING );
-				        messageBox.setText("Select a record");
-				        messageBox.setMessage("You need to select a record to continue");
-				        messageBox.open();
+						detailsPage.receiveDataToDisplay(inboxPage.getSelectedProblem());
+						detailsPage.refresh();
+					} else {
+						MessageBox messageBox = new MessageBox(shell, SWT.ICON_WARNING);
+						messageBox.setText("Select a record");
+						messageBox.setMessage("You need to select a record to continue");
+						messageBox.open();
 					}
 				}
+			}
+		});
+
+		refresh.addListener(SWT.Selection, new Listener() {
+
+			@Override
+			public void handleEvent(Event arg0) {
+				inboxPage.refresh();
 			}
 		});
 
