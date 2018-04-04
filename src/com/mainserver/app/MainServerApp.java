@@ -54,7 +54,7 @@ public class MainServerApp {
 	}
 
 	public void getProblemsFromDB() {
-		Problem problem1 = new Problem((new Date()).toString(), new User("app_client_user@yahoo.com", "a_password_123"),
+		Problem problem1 = new Problem((new Date()).toString(), new User("dobran_ovi@yahoo.com", "a_password_123"),
 				"pisica in copac", "45.749455", "21.231243", Status.NEW);
 		Problem problem2 = new Problem((new Date()).toString(), new User("app_client_user@yahoo.com", "a_password_123"),
 				"pisica in copac", "45.749455", "21.231243", Status.NEW);
@@ -91,7 +91,22 @@ public class MainServerApp {
 	}
 
 	public void sendConfirmationEmail(Problem problem) {
-		 //TODO sending email
+		String to = problem.getUser().getEmail();
+		String subject = "Problem sent";
+		String body = "The problem you had sent has been sent further, to the suitable authority.\n"//
+				+ "Problem you sent: " + problem.getDescription() + "\n"//
+				+ "Sent to: " + problem.getReceiver().getName();
+
+		ApplicationSession.getInstance().getEmailSender().sendEmail(to, subject, body);
+	}
+
+	public Receiver getReceiverByName(String name) {
+		for (Receiver receiver : receivers) {
+			if (receiver.getName().equals(name)) {
+				return receiver;
+			}
+		}
+		return null;
 	}
 
 }

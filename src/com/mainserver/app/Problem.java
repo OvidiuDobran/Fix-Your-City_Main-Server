@@ -8,6 +8,7 @@ public class Problem {
 	private String longitude;
 	private String latitude;
 	private Status status;
+	private Receiver receiver;
 	private static int idGenerated=0;;
 
 	public Problem(String string, User user, String description, String longitude, String latitude, Status status) {
@@ -18,7 +19,7 @@ public class Problem {
 		this.description = description;
 		this.latitude = latitude;
 		this.longitude = longitude;
-
+		this.receiver=null;
 	}
 
 	public String getDescription() {
@@ -75,6 +76,14 @@ public class Problem {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public Receiver getReceiver() {
+		return receiver;
+	}
+
+	public void setReceiver(Receiver receiver) {
+		this.receiver = receiver;
 	}
 
 }

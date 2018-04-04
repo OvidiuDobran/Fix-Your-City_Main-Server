@@ -7,10 +7,12 @@ public class ApplicationSession {
 	private static ApplicationSession instance;
 	private GUIHandler guiHandler;
 	private MainServerApp app;
+	private EmailSender emailSender;
 
 	private ApplicationSession() {
 		setGuiHandler(new GUIHandler());
 		setApp(new MainServerApp());
+		setEmailSender(new EmailSender());
 	}
 
 	public GUIHandler getGuiHandler() {
@@ -22,10 +24,10 @@ public class ApplicationSession {
 	}
 
 	public static ApplicationSession getInstance() {
-		if(instance==null) {
+		if (instance == null) {
 			synchronized (ApplicationSession.class) {
-				if(instance==null) {
-					instance=new ApplicationSession();
+				if (instance == null) {
+					instance = new ApplicationSession();
 				}
 			}
 		}
@@ -38,5 +40,13 @@ public class ApplicationSession {
 
 	public void setApp(MainServerApp app) {
 		this.app = app;
+	}
+
+	public EmailSender getEmailSender() {
+		return emailSender;
+	}
+
+	public void setEmailSender(EmailSender emailSender) {
+		this.emailSender = emailSender;
 	}
 }

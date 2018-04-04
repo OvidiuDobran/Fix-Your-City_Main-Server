@@ -44,7 +44,7 @@ public class DetailsPage extends MyComposite implements Behaviourable, Refreshab
 		setLayout(formLayout);
 
 		int textWidth = 300;
-		
+
 		Label labelId = new Label(this, SWT.NONE);
 		labelId.setText("ID");
 		FormData labelIdData = new FormData();
@@ -151,7 +151,7 @@ public class DetailsPage extends MyComposite implements Behaviourable, Refreshab
 		textStatusData.left = new FormAttachment(labelId, 80);
 		textStatusData.width = textWidth;
 		textStatus.setLayoutData(textStatusData);
-		
+
 		Label labelReceiver = new Label(this, SWT.NONE);
 		labelReceiver.setText("Receiver:");
 		FormData labelRecData = new FormData();
@@ -159,7 +159,6 @@ public class DetailsPage extends MyComposite implements Behaviourable, Refreshab
 		labelRecData.left = new FormAttachment(0, 20);
 		labelReceiver.setLayoutData(labelRecData);
 
-		
 		comboReceiver = new Combo(this, SWT.DROP_DOWN | SWT.BORDER);
 		FormData comboRecData = new FormData();
 		comboRecData.top = new FormAttachment(labelStatus, 20);
@@ -175,19 +174,19 @@ public class DetailsPage extends MyComposite implements Behaviourable, Refreshab
 
 	@Override
 	public void refresh() {
-		if(getProblem()!=null) {
-			textId.setText(getProblem().getId()+"");
+		if (getProblem() != null) {
+			textId.setText(getProblem().getId() + "");
 			textTime.setText(getProblem().getDate());
 			textUser.setText(getProblem().getUser().getEmail());
 			textDescription.setText(getProblem().getDescription());
 			textLong.setText(getProblem().getLongitude());
 			textLat.setText(getProblem().getLatitude());
-			textStatus.setText(getProblem().getStatus()+"");
-			
+			textStatus.setText(getProblem().getStatus() + "");
+
 			comboReceiver.removeAll();
 			ApplicationSession.getInstance().getApp().getReceiversFromDB();
-			List<Receiver> receivers=ApplicationSession.getInstance().getApp().receivers;
-			for(Receiver rec:receivers) {
+			List<Receiver> receivers = ApplicationSession.getInstance().getApp().receivers;
+			for (Receiver rec : receivers) {
 				comboReceiver.add(rec.getName());
 			}
 		}
@@ -196,21 +195,30 @@ public class DetailsPage extends MyComposite implements Behaviourable, Refreshab
 	@Override
 	public void addBehaviours() {
 		mapsButton.addListener(SWT.Selection, new Listener() {
-			
+
 			@Override
 			public void handleEvent(Event arg0) {
 				ApplicationSession.getInstance().getApp().openInBrowser(textLong.getText(), textLat.getText());
 			}
 		});
+		comboReceiver.addListener(SWT.Selection, new Listener() {
+
+			@Override
+			public void handleEvent(Event arg0) {
+				String receiverName = comboReceiver.getItem(comboReceiver.getSelectionIndex());
+				Receiver receiverWithName = ApplicationSession.getInstance().getApp().getReceiverByName(receiverName);
+				problem.setReceiver(receiverWithName);
+			}
+		});
 	}
-	
+
 	public boolean isItemSelected() {
 		return comboReceiver.getSelectionIndex() != -1;
 	}
-	
+
 	public Receiver getSelectedReceiver() {
-		for(Receiver receiver:ApplicationSession.getInstance().getApp().receivers) {
-			if(receiver.getName().equals(comboReceiver.getItem(comboReceiver.getSelectionIndex()))) {
+		for (Receiver receiver : ApplicationSession.getInstance().getApp().receivers) {
+			if (receiver.getName().equals(comboReceiver.getItem(comboReceiver.getSelectionIndex()))) {
 				return receiver;
 			}
 		}
