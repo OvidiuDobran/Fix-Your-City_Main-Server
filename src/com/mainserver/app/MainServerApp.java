@@ -49,8 +49,7 @@ public class MainServerApp {
 	}
 
 	public void prepareToExit() {
-		// TODO Auto-generated method stub
-
+		//TODO this method should save all the data that are worked with
 	}
 
 	public void getProblemsFromDB() {

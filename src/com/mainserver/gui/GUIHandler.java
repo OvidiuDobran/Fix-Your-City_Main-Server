@@ -154,6 +154,10 @@ public class GUIHandler {
 						MessageBox messageBox = new MessageBox(shell, SWT.ICON_INFORMATION|SWT.OK);
 						messageBox.setText("Problem sent");
 						messageBox.setMessage("The problem was sent to "+detailsPage.getSelectedReceiver().getName());
+						
+						/*FIXME according to the specifications the mail will be sent when we are sure that 
+						the Template Servers received the problem, not when the Main Server sends it to them.
+						*/
 						ApplicationSession.getInstance().getApp().sendConfirmationEmail(detailsPage.getProblem());
 						int buttonId=messageBox.open();
 						if(buttonId==SWT.OK) {
