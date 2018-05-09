@@ -53,6 +53,7 @@ public class MainServerApp {
 	}
 
 	public void getProblemsFromDB() {
+		//TODO http
 		Problem problem1 = new Problem((new Date()).toString(), new User("dobran_ovi@yahoo.com", "a_password_123"),
 				"pisica in copac", "45.749455", "21.231243", Status.NEW);
 		Problem problem2 = new Problem((new Date()).toString(), new User("app_client_user@yahoo.com", "a_password_123"),
@@ -70,6 +71,7 @@ public class MainServerApp {
 	}
 
 	public void getReceiversFromDB() {
+		//TODO http
 		receivers = new ArrayList<Receiver>();
 		receivers.add(new Receiver("Politie"));
 		receivers.add(new Receiver("Primarie"));

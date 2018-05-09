@@ -1,5 +1,5 @@
 package com.mainserver.app;
 
 public enum Status {
-	NEW, HANDLED
+	NEW, AT_HANDLER, HANDLED
 }
