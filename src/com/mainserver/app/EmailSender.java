@@ -34,8 +34,8 @@ public class EmailSender {
 			message.setFrom(new InternetAddress(serverAddr));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 			message.setSubject(subject);
-			message.setText(body);
-
+			//message.setText(body);
+			message.setContent(body, "text/html");
 			Transport.send(message);
 
 		} catch (MessagingException e) {

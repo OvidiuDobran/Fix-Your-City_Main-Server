@@ -54,7 +54,7 @@ public class MainServerApp {
 
 	public void getProblemsFromDB() {
 		//TODO http
-		Problem problem1 = new Problem((new Date()).toString(), new User("dobran_ovi@yahoo.com", "a_password_123"),
+		Problem problem1 = new Problem((new Date()).toString(), new User("cosma_patricia@yahoo.com", "a_password_123"),
 				"pisica in copac", "45.749455", "21.231243", Status.NEW);
 		Problem problem2 = new Problem((new Date()).toString(), new User("app_client_user@yahoo.com", "a_password_123"),
 				"pisica in copac", "45.749455", "21.231243", Status.NEW);
@@ -94,9 +94,10 @@ public class MainServerApp {
 	public void sendConfirmationEmail(Problem problem) {
 		String to = problem.getUser().getEmail();
 		String subject = "Problem sent";
-		String body = "The problem you had sent has been sent further, to the suitable authority.\n"//
-				+ "Problem you sent: " + problem.getDescription() + "\n"//
-				+ "Sent to: " + problem.getReceiver().getName();
+		String body = "<i><b>Greetings!</i></b><br><br><br>";
+		body += "The problem you had sent has been sent further, to the suitable authority.\n<br><br>"
+				+ "<font color=green><b><i>Problem you sent: </i></b></font>" + problem.getDescription() + "\n</b><br><br>"
+				+ "<i><b>Sent to: </i></b>" + problem.getReceiver().getName();
 
 		ApplicationSession.getInstance().getEmailSender().sendEmail(to, subject, body);
 	}
