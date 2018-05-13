@@ -8,11 +8,13 @@ public class ApplicationSession {
 	private GUIHandler guiHandler;
 	private MainServerApp app;
 	private EmailSender emailSender;
+	private HTTPPostHandler postHandler;
 
 	private ApplicationSession() {
 		setGuiHandler(new GUIHandler());
 		setApp(new MainServerApp());
 		setEmailSender(new EmailSender());
+		postHandler=new HTTPPostHandler();
 	}
 
 	public GUIHandler getGuiHandler() {
@@ -48,5 +50,13 @@ public class ApplicationSession {
 
 	public void setEmailSender(EmailSender emailSender) {
 		this.emailSender = emailSender;
+	}
+
+	public HTTPPostHandler getPostHandler() {
+		return postHandler;
+	}
+
+	public void setPostHandler(HTTPPostHandler postHandler) {
+		this.postHandler = postHandler;
 	}
 }

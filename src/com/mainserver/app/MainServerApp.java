@@ -53,21 +53,7 @@ public class MainServerApp {
 	}
 
 	public void getProblemsFromDB() {
-		//TODO http
-		Problem problem1 = new Problem((new Date()).toString(), new User("dobran_ovi@yahoo.com", "a_password_123"),
-				"pisica in copac", "45.749455", "21.231243", Status.NEW);
-		Problem problem2 = new Problem((new Date()).toString(), new User("app_client_user@yahoo.com", "a_password_123"),
-				"pisica in copac", "45.749455", "21.231243", Status.NEW);
-		Problem problem3 = new Problem((new Date()).toString(), new User("app_client_user@yahoo.com", "a_password_123"),
-				"pisica in copac", "45.749455", "21.231243", Status.NEW);
-		Problem problem4 = new Problem((new Date()).toString(), new User("app_client_user@yahoo.com", "a_password_123"),
-				"pisica in copac", "45.749455", "21.231243", Status.NEW);
-
-		problems = new ArrayList<Problem>();
-		problems.add(problem1);
-		problems.add(problem2);
-		problems.add(problem3);
-		problems.add(problem4);
+		problems=ApplicationSession.getInstance().getPostHandler().getAllNewProblemsFromDB();
 	}
 
 	public void getReceiversFromDB() {
@@ -79,7 +65,7 @@ public class MainServerApp {
 	}
 
 	public void sentProblemToReceiver(Problem problem, Receiver receiver) {
-		// TODO some interactions with the DB
+		ApplicationSession.getInstance().getPostHandler().sentProblemToReceiver(problem.getId(),receiver.getName());
 	}
 
 	public Problem getProblemById(int id) {
