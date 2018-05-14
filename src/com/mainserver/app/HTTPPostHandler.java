@@ -117,7 +117,7 @@ public class HTTPPostHandler {
 			
 			User user=getUserById(Integer.parseInt(recs[1]));
 			
-			Problem problem=new Problem(Integer.parseInt(recs[0]),recs[4],user,recs[3],recs[5],recs[6],Status.NEW);
+			Problem problem=new Problem(Integer.parseInt(recs[0]),recs[4],user,recs[3],recs[6],recs[5],Status.NEW);
 			problems.add(problem);
 			
 		}
@@ -138,7 +138,39 @@ public class HTTPPostHandler {
 	}
 
 	public void sentProblemToReceiver(int problemId, String receiverName) {
-		post("setReceiver","Data=Name"+receiverName+";ProblemId"+problemId);
+		post("setReceiver","Data=Name="+receiverName+";ProblemId="+problemId);
 		
+	}
+
+	public List<Receiver> getReceiversFromDB() {
+		List <Receiver>receivers=new ArrayList<Receiver>();
+		String result=post("getReceivers","");
+		System.out.println(result);
+
+		result=result.substring(result.indexOf("["));
+		String results[]=result.split("},");
+		for (int i=0;i<results.length;i++) {
+			System.out.println(results[i]);
+			String recs[]=results[i].split(",");
+			/*for (String s:recs) {
+				System.out.println(s);
+			}*/
+			for(int j=0;j<recs.length;j++) {
+				recs[j]=recs[j].substring(recs[j].indexOf(":")+1);
+				if(recs[j].contains("\"")) {
+					recs[j]=recs[j].substring(recs[j].indexOf("\"")+1,recs[j].length()-1);
+				}
+				if(recs[j].contains("}")) {
+					recs[j]=recs[j].substring(0, recs[j].indexOf("}"));
+				}
+				System.out.println(recs[j]);
+			}
+			
+			
+			Receiver receiver=new Receiver(Integer.parseInt(recs[0]),recs[1]);
+			receivers.add(receiver);
+			
+		}
+		return receivers;
 	}
 }

@@ -48,9 +48,7 @@ public class MainServerApp {
 		}
 	}
 
-	public void prepareToExit() {
-		//TODO this method should save all the data that are worked with
-	}
+	
 
 	public void getProblemsFromDB() {
 		problems=ApplicationSession.getInstance().getPostHandler().getAllNewProblemsFromDB();
@@ -58,10 +56,11 @@ public class MainServerApp {
 
 	public void getReceiversFromDB() {
 		//TODO http
-		receivers = new ArrayList<Receiver>();
+		/*receivers = new ArrayList<Receiver>();
 		receivers.add(new Receiver("Politie"));
 		receivers.add(new Receiver("Primarie"));
-		receivers.add(new Receiver("Pompieri"));
+		receivers.add(new Receiver("Pompieri"));*/
+		receivers=ApplicationSession.getInstance().getPostHandler().getReceiversFromDB();
 	}
 
 	public void sentProblemToReceiver(Problem problem, Receiver receiver) {

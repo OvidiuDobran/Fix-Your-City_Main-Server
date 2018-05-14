@@ -1,10 +1,15 @@
 package com.mainserver.app;
 
 public class Receiver {
-	private int id; //TODO handle id
+	private int id; // TODO handle id
 	private String name;
 
 	public Receiver(String name) {
+		this.setName(name);
+	}
+
+	public Receiver(int id, String name) {
+		this.id=id;
 		this.setName(name);
 	}
 
@@ -23,6 +28,5 @@ public class Receiver {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
-	
+
 }

@@ -119,7 +119,6 @@ public class GUIHandler {
 			@Override
 			public void handleEvent(Event arg0) {
 				shell.close();
-				ApplicationSession.getInstance().getApp().prepareToExit();
 			}
 		});
 
