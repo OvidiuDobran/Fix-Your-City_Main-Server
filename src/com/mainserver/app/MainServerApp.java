@@ -79,12 +79,20 @@ public class MainServerApp {
 	public void sendConfirmationEmail(Problem problem) {
 		String to = problem.getUser().getEmail();
 		String subject = "Problem sent";
-		String body = "The problem you had sent has been sent further, to the suitable authority.\n"//
-				+ "Problem you sent: " + problem.getDescription() + "\n"//
-				+ "Sent to: " + problem.getReceiver().getName();
+		String body = "<i><b>Greetings!</i></b><br><br><br>";
+		body += "The problem you had sent has been sent further, to the suitable authority.\n<br><br>"
+				+ "<font color=green><b><i>Problem you sent: </i></b></font>" + problem.getDescription() + "\n</b><br><br>"
+				+ "<i><b>Sent to: </i></b>" + problem.getReceiver().getName();
 
 		ApplicationSession.getInstance().getEmailSender().sendEmail(to, subject, body);
 	}
+	
+	/*String body = "<i><b>Greetings!</i></b><br><br><br>";
+		body += "The problem you had sent has been sent further, to the suitable authority.\n<br><br>"
+						+ "<font color=green><b><i>Problem you sent: </i></b></font>" + problem.getDescription() + "\n</b><br><br>"
+						+ "<i><b>Sent to: </i></b>" + problem.getReceiver().getName();
+Chat Conversation End
+Type a message...*/
 
 	public Receiver getReceiverByName(String name) {
 		for (Receiver receiver : receivers) {
